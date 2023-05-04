@@ -1,0 +1,18 @@
+[project]
+name = "lumaapi"
+authors = [
+    {name = "Luma AI", email = "hello@lumalabs.ai"},
+]
+description = "Luma AI API wrapper library"
+readme = "README.md"
+requires-python = ">=3.7"
+keywords = ["one", "two"]
+license = {text = "BSD-3-Clause"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "requests",
+    "fire",
+]
+dynamic = ["version"]
