@@ -301,7 +301,7 @@ def get(query: str="",
         take : int=50,
         desc : bool = True) -> List[LumaCaptureInfo]:
     """
-    Get a range of captures from all of the user's captures
+    Find captures from all of the user's API captures
 
     :param query: str, query string to filter captures by (title)
     :param skip: int, starting capture index
@@ -324,6 +324,8 @@ def get(query: str="",
     data = response.json()
     return [LumaCaptureInfo.from_dict(x) for x in data["captures"]]
 
+def entrypoint():
+    fire.Fire()
 
 if __name__ == '__main__':
-    fire.Fire()
+    entrypoint()
