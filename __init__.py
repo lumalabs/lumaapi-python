@@ -296,12 +296,14 @@ def status(slug: str) -> LumaCaptureInfo:
     return LumaCaptureInfo.from_dict(data)
 
 
-def get(skip : int=0,
+def get(query: str="",
+        skip : int=0,
         take : int=50,
         desc : bool = True) -> List[LumaCaptureInfo]:
     """
     Get a range of captures from all of the user's captures
 
+    :param query: str, query string to filter captures by (title)
     :param skip: int, starting capture index
     :param take: int, number of captures to take
     :param desc: bool, whether to sort in descending order
@@ -309,27 +311,14 @@ def get(skip : int=0,
     :return: list of LumaCaptureInfo dataclass
     """
     auth_headers = auth()
+    query = urllib.parse.quote(query)
     skip = int(skip)
     take = int(take)
     order = "DESC" if desc else "ASC"
-    response = requests.get(f"{API_BASE_URL}capture?skip={skip}&take={take}&order={order}",
-                            headers=auth_headers)
-    response.raise_for_status()
-    data = response.json()
-    return [LumaCaptureInfo.from_dict(x) for x in data["captures"]]
-
-
-def search(query: str) -> List[LumaCaptureInfo]:
-    """
-    Search user's captures by query
-
-    :param query: str, query to search for (title contains)
-
-    :return: list of LumaCaptureInfo dataclasses
-    """
-    auth_headers = auth()
-    query = urllib.parse.quote(query)
-    response = requests.get(f"{API_BASE_URL}capture?search={query}&skip=0&take=3&order=DESC",
+    url = f"{API_BASE_URL}capture?"
+    if query:
+        url += f"search={query}&"
+    response = requests.get(url + f"skip={skip}&take={take}&order={order}",
                             headers=auth_headers)
     response.raise_for_status()
     data = response.json()
