@@ -1,0 +1,6 @@
+include README.md
+include MANIFEST.in
+include setup.cfg
+include pyproject.toml
+include lumaapi/__init__.py
+include scripts/run_lumaapi.py

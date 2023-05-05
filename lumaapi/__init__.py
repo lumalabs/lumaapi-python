@@ -1,8 +1,28 @@
-# Luma API
-# Copyright 2022 Luma AI
+# Copyright 2023 Luma AI, Inc
+#
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+#
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import os
+import shutil
 from typing import Optional, List, Dict
+import uuid
 import urllib.parse
 from enum import Enum
 from dataclasses import dataclass
@@ -10,10 +30,12 @@ from datetime import datetime
 import time
 import json
 import requests
+
 import fire
+import platformdirs
 
 
-CACHE_DIR = os.path.join(os.path.expanduser("~"), ".lumaapi")
+CACHE_DIR = platformdirs.user_config_dir("luma")
 AUTH_FILE = os.path.join(CACHE_DIR, "auth.json")
 API_BASE_URL = "https://webapp.engineeringlumalabs.com/api/v2/"
 
@@ -176,14 +198,39 @@ class LumaCaptureInfo:
 
 class LumaClient:
     """
-    Luma API Python client
+    Luma API Python Client.
+    Currently limited to basic video/zip/folder uploads
+    and status checking.
+
+    Library usage: :code:`from lumaapi import LumaClient`
+
+    CLI usage:
+
+    To submit a video
+    :code:`luma submit <video> <title>`
+    This outputs a slug.
+
+    To check status of the capture
+    :code:`luma status <slug>`
+
+    To search user's captures
+    :code:`luma get <title>`
+
+    To manually authenticate
+    (the CLI automatically prompts for api-key when running anything else)
+    :code:`luma auth`
+
+    To check for credits
+    :code:`luma credits`
     """
-    def __init__(self):
-        pass
+    def __init__(self, api_key: Optional[str] = None):
+        if api_key is not None:
+            self.auth(api_key)
 
 
-    def get_credits(self) -> LumaCreditInfo:
+    def credits(self) -> LumaCreditInfo:
         """
+        :code:`luma credits`
         Get number of credits remaining for the user.
 
         :return: LumaCreditInfo
@@ -197,10 +244,11 @@ class LumaClient:
 
     def auth(self, api_key: Optional[str] = None):
         """
+        :code:`luma auth`, :code:`luma auth <api-key>`
         Update the api_key to the provided api_key.
         Alternatively, if api_key is not given, load the cached API key,
         or ask the user to enter it
-        If api_key is updated, runs get_credits to check its validity.
+        If api_key is updated, runs client.credits() to check its validity.
 
         :param api_key: str, optional, API key to use instead of prompting user
         :return: dict, headers to use for authenticated requests (:code:`Authorization: luma-pai-key=<api_key>`)
@@ -220,7 +268,7 @@ class LumaClient:
             print("Verifying api-key...")
             # Check it by getting credits
             try:
-                self.get_credits()
+                self.credits()
             except Exception as ex:
                 print("401 invalid API key, please obtain one from https://captures.lumalabs.ai/dashboard")
                 os.remove(AUTH_FILE)
@@ -231,7 +279,8 @@ class LumaClient:
 
     def clear_auth(self):
         """
-        Remove cached authorization (auth()) if present
+        :code:`luma clear_auth`
+        Remove cached authorization (client.auth()) if present
         """
         if os.path.isfile(AUTH_FILE):
             os.remove(AUTH_FILE)
@@ -240,59 +289,101 @@ class LumaClient:
     def submit(self,
                path: str,
                title: str,
-               privacy: PrivacyLevel = PrivacyLevel.PRIVATE,
-               location: Optional[CaptureLocation] = None,
                cam_model: CameraType = CameraType.NORMAL,
+               silent: bool = False,
            ) -> str:
         """
-        Submit a video or image to Luma for processing, with given title.
+        :code:`luma submit <path> <title>`
+        Submit a video, zip, or directory (at path) to Luma for processing, with given title.
         User might be prompted for API key, if not already authenticated (call auth).
         Returns the slug. After submissing, use status(slug) to check the status
         and output artifacts.
 
-        :param path: str, path to video or zip of images or zip of multiple videos to submit
+        :param path: str, path to video, zip of images, zip of multiple videos, or directory (with images) to submit
         :param title: str, a descriptive title for the capture
-        :param privacy: PrivacyLevel, privacy level for the capture
-        :param location: str, location of capture
+        :param cam_model: CameraType, camera model
+        :param silent: bool, if True, do not print progress
+
+        :return: str, the slug identifier for checking the status etc
+        """
+        tmp_path = None
+        if os.path.isdir(path):
+            path = path.rstrip("/").rstrip("\\")
+            tmp_path = os.path.join(os.path.dirname(path),
+                                    uuid.uuid4().hex)
+            if not silent:
+                print("Compressing directory", path, "to", tmp_path + ".zip")
+            path = shutil.make_archive(tmp_path, 'zip', path)
+            if not silent:
+                print("Compressed to", path)
+
+        with open(path, "rb") as f:
+            payload = f.read()
+        result = self.submit_binary(payload, title,
+                           cam_model=cam_model,
+                           silent=silent)
+        if tmp_path is not None and os.path.isfile(tmp_path):
+            os.remove(tmp_path)
+        return result
+
+    def submit_binary(self,
+               payload: bytes,
+               title: str,
+               cam_model: CameraType = CameraType.NORMAL,
+               silent: bool = False,
+           ) -> str:
+        """
+        (Python only)
+        Submit a video or zip (as binary blob) to Luma for processing, with given title.
+        User might be prompted for API key, if not already authenticated (call auth).
+        Returns the slug. After submissing, use status(slug) to check the status
+        and output artifacts.
+
+        :param payload: bytes,
+        :param title: str, a descriptive title for the capture
         :param cam_model: CameraType, camera model
 
         :return: str, the slug identifier for checking the status etc
         """
-
-        assert os.path.isfile(path), "File not found: " + path
         auth_headers = self.auth()
 
         # 1. Create capture
         capture_data = {
             'title': title,
-            'privacy': privacy.value,
             'camModel': cam_model.value,
         }
-        if location is not None:
-            capture_data['location'] = location.to_dict()
-        response = requests.post(f"{API_BASE_URL}capture", headers=auth_headers, data=capture_data)
+        if not silent:
+            print("Capture data", capture_data)
+        response = requests.post(f"{API_BASE_URL}capture",
+                                 headers=auth_headers, data=capture_data)
         response.raise_for_status()
         capture_data = response.json()
         upload_url = capture_data['signedUrls']['source']
         slug = capture_data['capture']['slug']
-
-        with open(path, "rb") as f:
-            payload = f.read()
+        if not silent:
+            print("Created capture", slug)
+            print("Uploading")
 
         # 2. Upload video or zip
         response = requests.put(upload_url, headers={'Content-Type': 'text/plain'}, data=payload)
         response.raise_for_status()
 
         time.sleep(0.5)
+        if not silent:
+            print("Triggering")
 
         # 3. Trigger processing
         response = requests.post(f"{API_BASE_URL}capture/{slug}", headers=auth_headers)
         response.raise_for_status()
+
+        if not silent:
+            print("Submitted", slug)
         return slug
 
 
     def status(self, slug: str) -> LumaCaptureInfo:
         """
+        :code:`luma status <slug>`
         Check the status of a submitted capture
 
         :param slug: str, slug of capture to check (from submit())
@@ -312,6 +403,7 @@ class LumaClient:
             take : int=50,
             desc : bool = True) -> List[LumaCaptureInfo]:
         """
+        :code:`luma get <query>`
         Find captures from all of the user's API captures
 
         :param query: str, query string to filter captures by (title)

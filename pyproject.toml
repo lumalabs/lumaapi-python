@@ -4,10 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lumaapi"
+version = "0.0.1"
 authors = [
     {name = "Luma AI", email = "hello@lumalabs.ai"},
 ]
-description = "Luma AI API wrapper library"
+description = "Luma AI API wrapper library and CLI"
 readme = "README.md"
 requires-python = ">=3.7"
 keywords = ["one", "two"]
@@ -18,12 +19,12 @@ classifiers = [
 dependencies = [
     "requests",
     "fire",
+    "platformdirs",
 ]
-dynamic = ["version"]
 
 [tool.setuptools.packages.find]
 include = ["lumaapi*", "scripts*"]
 
 
 [project.scripts]
-luma = "scripts.run:entrypoint"
+luma = "scripts.run_lumaapi:entrypoint"
