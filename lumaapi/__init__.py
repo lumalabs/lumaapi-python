@@ -31,7 +31,6 @@ import time
 import json
 import requests
 
-import fire
 import platformdirs
 
 
@@ -223,7 +222,11 @@ class LumaClient:
     To check for credits
     :code:`luma credits`
     """
-    def __init__(self, api_key: Optional[str] = None):
+    def __init__(self,
+                 api_key: Optional[str] = None,
+                 is_cli: bool = False):
+        self.auth_header = None
+        self.is_cli = is_cli
         if api_key is not None:
             self.auth(api_key)
 
@@ -239,10 +242,14 @@ class LumaClient:
         response = requests.get(f"{API_BASE_URL}capture/credits", headers=auth_headers)
         response.raise_for_status()
         data = response.json()
+        if self.is_cli:
+            # Force fire to display it rather than trying to
+            # run subcommands
+            return data
         return LumaCreditInfo(**data)
 
 
-    def auth(self, api_key: Optional[str] = None):
+    def auth(self, api_key: Optional[str] = None) -> Dict[str, str]:
         """
         :code:`luma auth`, :code:`luma auth <api-key>`
         Update the api_key to the provided api_key.
@@ -251,12 +258,16 @@ class LumaClient:
         If api_key is updated, runs client.credits() to check its validity.
 
         :param api_key: str, optional, API key to use instead of prompting user
+
         :return: dict, headers to use for authenticated requests (:code:`Authorization: luma-pai-key=<api_key>`)
         """
         os.makedirs(CACHE_DIR, exist_ok=True)
-        if api_key is None and os.path.isfile(AUTH_FILE):
+        if api_key is None and self.auth_header is not None:
+            result = self.auth_header
+        elif api_key is None and os.path.isfile(AUTH_FILE):
             with open(AUTH_FILE, "r") as f:
                 result = json.load(f)
+                self.auth_header = result
         else:
             # Prompt user for API key
             if api_key is None:
@@ -273,6 +284,7 @@ class LumaClient:
                 print("401 invalid API key, please obtain one from https://captures.lumalabs.ai/dashboard")
                 os.remove(AUTH_FILE)
                 raise ex
+            self.auth_header = result
 
         return result
 
@@ -394,6 +406,10 @@ class LumaClient:
         response = requests.get(f"{API_BASE_URL}capture/{slug}", headers=auth_headers)
         response.raise_for_status()
         data = response.json()
+        if self.is_cli:
+            # Force fire to display it rather than trying to
+            # run subcommands
+            return data
         return LumaCaptureInfo.from_dict(data)
 
 
@@ -426,6 +442,3 @@ class LumaClient:
         response.raise_for_status()
         data = response.json()
         return [LumaCaptureInfo.from_dict(x) for x in data["captures"]]
-
-if __name__ == '__main__':
-    fire.Fire(LumaClient)
