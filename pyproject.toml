@@ -21,5 +21,9 @@ dependencies = [
 ]
 dynamic = ["version"]
 
+[tool.setuptools.packages.find]
+include = ["lumaapi*", "scripts*"]
+
+
 [project.scripts]
-luma = "__init__:entrypoint"
+luma = "scripts.run:entrypoint"
