@@ -206,7 +206,8 @@ class LumaClient:
     CLI usage:
 
     To submit a video
-    :code:`luma submit <video> <title>`
+    :code:`luma submit <path> <title>`,
+    where path can be a video, zip, or directory.
     This outputs a slug.
 
     To check status of the capture
