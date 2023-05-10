@@ -78,6 +78,9 @@ Misc Types
 .. autoenum:: lumaapi.CaptureStatus
    :members:
 
+.. autoenum:: lumaapi.RunStatus
+   :members:
+
 .. autoenum:: lumaapi.CaptureType
    :members:
 
