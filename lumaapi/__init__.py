@@ -496,7 +496,10 @@ class LumaClient:
             take : int=50,
             desc : bool = True) -> List[LumaCaptureInfo]:
         """
-        :code:`luma get <query>`
+        .. code-block:: shell
+
+            luma get <query>
+
         Find captures from all of the user's API captures
 
         :param query: str, query string to filter captures by (title)
