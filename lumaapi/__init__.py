@@ -275,10 +275,16 @@ class LumaClient:
     .. code-block:: shell
 
         luma credits
+
+    :param api_key: API key. If None, will be requested when needed
+    :param is_cli: Whether this is being used as a CLI (internal use only)
     """
     def __init__(self,
                  api_key: Optional[str] = None,
                  is_cli: bool = False):
+        """
+        Construct LumaClient
+        """
         self.auth_header = None
         self.is_cli = is_cli
         if api_key is not None:
