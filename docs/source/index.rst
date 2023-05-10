@@ -3,19 +3,15 @@
 Luma API Python + CLI Client Reference
 =========================================================
 
-This is a Python and CLI client for the `Luma API <https://lumalabs.ai/luma-api>`_
-Both are included in the pure-Python library :code:`lumaapi`.
-
-* Installation: you can install it from PyPI
+This is a Python and CLI client for the `Luma API <https://lumalabs.ai/luma-api>`_.
+Both are included in the pure-Python library :code:`lumaapi`, which you can install from PyPI:
 
 .. code-block:: shell
 
     pip install lumaapi
 
+We assume you already have Python 3 with pip installed.
 
-* Luma API: `Dashboard <https://captures.lumalabs.ai/dashboard>`_,
-  `API reference <https://documenter.getpostman.com/view/24305418/2s93CRMCas>`_
-  
 
 Example CLI usage
 *****************************
@@ -28,6 +24,15 @@ Example CLI usage
     luma submit <path> <title>
     # Check status of slug
     luma status <slug>
+
+If not already logged in, you will be prompted
+for an API key. You may obtain
+one from the `Luma API dashboard <captures.lumalabs.ai/dashboard>`_.
+You may also manually authenticate with
+
+.. code-block:: shell
+
+    luma auth <api-key>
 
 
 Example usage inside Python
