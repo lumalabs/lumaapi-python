@@ -4,3 +4,4 @@ sphinxcontrib-fulltoc
 recommonmark
 lumaapi
 numpy
+enum-tools[sphinx]

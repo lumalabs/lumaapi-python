@@ -1,4 +1,4 @@
-.. _lumaapi:
+uk.. _lumaapi:
 
 Luma API Python + CLI Client Reference
 =========================================================
@@ -71,12 +71,21 @@ Misc Types
 .. autoclass:: lumaapi.LumaCaptureInfo
    :members:
 
-.. autoclass:: lumaapi.PrivacyLevel
+.. autoclass:: lumaapi.LumaRunInfo
    :members:
-   :show-inheritance:
+
+.. autoenum:: lumaapi.PrivacyLevel
+   :members:
+
+.. autoenum:: lumaapi.CaptureStatus
+   :members:
+
+.. autoenum:: lumaapi.CaptureType
+   :members:
 
 .. autoclass:: lumaapi.CaptureLocation
    :members:
+
 
 Note:
 This doc uses `Ruilong Li's fork of the PyTorch Sphinx theme <https://github.com/liruilong940607/pytorch_sphinx_theme>`_

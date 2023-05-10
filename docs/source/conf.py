@@ -43,6 +43,7 @@ extensions = [
 		'sphinx.ext.autosummary',
 		#  'sphinx.ext.intersphinx',
         'pytorch_sphinx_theme',
+        'enum_tools.autoenum',
     ]
 
 # Add any paths that contain templates here, relative to this directory.
