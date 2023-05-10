@@ -92,7 +92,7 @@ html_theme_options = {
          "url": "https://lumalabs.ai/luma-api"},
         {"name": "API dashboard",
          "url": "https://captures.lumalabs.ai/dashboard"},
-        {"name": "API docs",
+        {"name": "API reference",
          "url": "https://documenter.getpostman.com/view/24305418/2s93CRMCas"},
 	],
 }

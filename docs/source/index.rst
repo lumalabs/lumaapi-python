@@ -15,6 +15,7 @@ Both are included in the pure-Python library :code:`lumaapi`.
 
 * Luma API: `Dashboard <https://captures.lumalabs.ai/dashboard>`_,
   `API reference <https://documenter.getpostman.com/view/24305418/2s93CRMCas>`_
+  
 
 Example CLI usage
 *****************************
@@ -42,15 +43,21 @@ Example usage inside Python
 Any of the functions in LumaClient may be used directly in the CLI e.g.
 :code:`luma submit video_path title`
 
+Attributions:
+This doc uses `Ruilong Li's fork of the PyTorch Sphinx theme <https://github.com/liruilong940607/pytorch_sphinx_theme>`_
+used for `nerfacc <https://www.nerfacc.com>`_
 
-Reference: LumaClient
+Please see detailed per-function documentation below.
+
+
+LumaClient
 *****************************
 
 .. autoclass:: lumaapi.LumaClient
    :members:
 
 
-Reference: Misc Types
+Misc Types
 *****************************
 
 .. autoclass:: lumaapi.LumaCreditInfo
