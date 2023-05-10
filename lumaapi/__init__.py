@@ -153,6 +153,7 @@ class CaptureLocation:
         }
 
 
+@enum_tools.documentation.document_enum
 class RunStatus(Enum):
     """
     Capture run status
