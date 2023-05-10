@@ -13,7 +13,7 @@
 import os
 import sys
 import subprocess
-import sphinx_rtd_theme
+import pytorch_sphinx_theme
 sys.path.insert(0, os.path.join(os.path.abspath('.'), '..'))
 
 
@@ -36,8 +36,13 @@ print('lumaapi', release)
 # ones.
 extensions = [
         'recommonmark',
-        'sphinx.ext.autodoc',
-        'sphinx_rtd_theme',
+		'sphinx.ext.napoleon',
+		'sphinx.ext.duration',
+		'sphinx.ext.doctest',
+		'sphinx.ext.autodoc',
+		'sphinx.ext.autosummary',
+		#  'sphinx.ext.intersphinx',
+        'pytorch_sphinx_theme',
     ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -54,12 +59,17 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'pytorch_sphinx_theme'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = []
+html_theme_path = [pytorch_sphinx_theme.get_html_theme_path()]
+html_static_path = ["_static"]
+html_css_files = ["css/readthedocs.css"]
+
+copybutton_prompt_text = r">>> |\.\.\. "
+copybutton_prompt_is_regexp = True
 
 add_module_names = False
 
@@ -74,6 +84,20 @@ def setup(app):
 autodoc_member_order = 'bysource'
 
 html_theme_options = {
-    'collapse_navigation': False,
-    'sticky_navigation': True,
+    #  'collapse_navigation': False,
+    #  'sticky_navigation': True,
+    "logo_url": "/",
+    "menu": [
+        {"name": "API home",
+         "url": "https://lumalabs.ai/luma-api"},
+        {"name": "API dashboard",
+         "url": "https://captures.lumalabs.ai/dashboard"},
+        {"name": "API docs",
+         "url": "https://documenter.getpostman.com/view/24305418/2s93CRMCas"},
+	],
 }
+
+epub_show_urls = "footnote"
+
+# typehints
+autodoc_typehints = "description"

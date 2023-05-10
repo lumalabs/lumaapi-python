@@ -1,15 +1,18 @@
-.. lumaapi documentation master file, created by
-   sphinx-quickstart on Wed Sep 15 10:48:24 2021.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. _lumaapi:
 
 Luma API Python + CLI Client Reference
 =========================================================
 
 This is a Python and CLI client for the `Luma API <https://lumalabs.ai/luma-api>`_
+Both are included in the pure-Python library :code:`lumaapi`.
 
-* Installation: :code:`pip install lumaapi`
-* Python library reference: :ref:`lumaapi`
+* Installation: you can install it from PyPI
+
+.. code-block:: shell
+
+    pip install lumaapi
+
+
 * Luma API: `Dashboard <https://captures.lumalabs.ai/dashboard>`_,
   `API reference <https://documenter.getpostman.com/view/24305418/2s93CRMCas>`_
 
@@ -36,11 +39,29 @@ Example usage inside Python
     slug = client.submit(video_path, title)
     print(client.status(slug))
 
+Any of the functions in LumaClient may be used directly in the CLI e.g.
+:code:`luma submit video_path title`
 
-Please see the reference for more details
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+Reference: LumaClient
+*****************************
 
-   lumaapi
+.. autoclass:: lumaapi.LumaClient
+   :members:
+
+
+Reference: Misc Types
+*****************************
+
+.. autoclass:: lumaapi.LumaCreditInfo
+   :members:
+
+.. autoclass:: lumaapi.LumaCaptureInfo
+   :members:
+
+.. autoclass:: lumaapi.PrivacyLevel
+   :members:
+   :show-inheritance:
+
+.. autoclass:: lumaapi.CaptureLocation
+   :members:
