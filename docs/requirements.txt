@@ -1,0 +1,6 @@
+sphinx
+sphinx-rtd-theme
+sphinxcontrib-fulltoc
+recommonmark
+lumaapi
+numpy

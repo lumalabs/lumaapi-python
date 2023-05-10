@@ -13,7 +13,7 @@ Example usage inside python
     print(client.status(slug))
 
 Any of the functions in LumaClient may be used directly in the CLI e.g.
-`luma submit video_path title`
+:code:`luma submit video_path title`
 
 
 .. autoclass:: lumaapi.LumaClient

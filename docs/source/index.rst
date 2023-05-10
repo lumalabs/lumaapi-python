@@ -10,7 +10,8 @@ This is a Python and CLI client for the `Luma API <https://lumalabs.ai/luma-api>
 
 * Installation: :code:`pip install lumaapi`
 * Python library reference: :ref:`lumaapi`
-* Luma API reference: https://documenter.getpostman.com/view/24305418/2s93CRMCas
+* Luma API: `Dashboard <https://captures.lumalabs.ai/dashboard>`_,
+  `API reference <https://documenter.getpostman.com/view/24305418/2s93CRMCas>`_
 
 Example CLI usage
 *****************************
