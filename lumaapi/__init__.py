@@ -106,8 +106,10 @@ class CaptureStatus(Enum):
     Capture upload status. Not to be confused with :class:`.RunStatus`
     """
     NEW = 0  # doc: New capture, not uploaded
-    UPLOADING = 0  # doc: Capture is uploading
-    COMPLETE = 1 # doc: Capture has finished uploading
+
+    UPLOADING = 1  # doc: Capture is uploading
+
+    COMPLETE = 2 # doc: Capture has finished uploading
 
     @classmethod
     def parse(cls, name: str) -> "CaptureStatus":
