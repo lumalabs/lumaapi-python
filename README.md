@@ -4,7 +4,8 @@
 
 `pip install lumaapi`
 
-**Docs:** 
+### Docs
+
 https://captures.lumalabs.ai/luma-api/client-docs
 
 
@@ -14,6 +15,19 @@ make html
 ```
 
 Need to install requirements first time (`pip install -r docs/requirements.txt`)
+
+
+###  Release
+First install deps `pip install python-build twine`
+
+Then update the version in `pyproject.toml` and
+```sh
+python -m build
+twine upload dist/lumaapi-<x.x.x>.tar.gz
+```
+
+Please get the password from 1Password (search PyPI)
+
 
 ### CLI usage
 
