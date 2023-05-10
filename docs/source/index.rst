@@ -46,11 +46,11 @@ Example usage inside Python
     print(client.status(slug))
 
 Any of the functions in LumaClient may be used directly in the CLI e.g.
-:code:`luma submit video_path title`
 
-Attributions:
-This doc uses `Ruilong Li's fork of the PyTorch Sphinx theme <https://github.com/liruilong940607/pytorch_sphinx_theme>`_
-used for `nerfacc <https://www.nerfacc.com>`_
+.. code-block:: shell
+
+    client.submit(video_path, title)
+    luma submit video_path title
 
 Please see detailed per-function documentation below.
 
@@ -77,3 +77,7 @@ Misc Types
 
 .. autoclass:: lumaapi.CaptureLocation
    :members:
+
+Note:
+This doc uses `Ruilong Li's fork of the PyTorch Sphinx theme <https://github.com/liruilong940607/pytorch_sphinx_theme>`_
+used for `nerfacc <https://www.nerfacc.com>`_
