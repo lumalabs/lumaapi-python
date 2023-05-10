@@ -363,7 +363,7 @@ class LumaClient:
 
             luma clear-auth
 
-        Remove cached authorization (client.auth()) if present
+        Remove cached authorization (:meth:`.auth`) if present
         """
         if os.path.isfile(AUTH_FILE):
             os.remove(AUTH_FILE)
