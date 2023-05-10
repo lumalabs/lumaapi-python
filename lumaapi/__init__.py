@@ -129,7 +129,7 @@ class CaptureLocation:
     """
     Longitude in deg
     """
-    name: str = "" 
+    name: str = ""
     """
     Name of location if available
     """
@@ -295,7 +295,10 @@ class LumaClient:
 
     def credits(self) -> LumaCreditInfo:
         """
-        :code:`luma credits`
+        .. code-block:: shell
+
+            luma credits
+
         Get number of credits remaining for the user.
 
         :return: LumaCreditInfo
@@ -313,7 +316,10 @@ class LumaClient:
 
     def auth(self, api_key: Optional[str] = None) -> Dict[str, str]:
         """
-        :code:`luma auth`, :code:`luma auth <api-key>`
+        .. code-block:: shell
+
+            luma auth [api-key]
+
         Update the api_key to the provided api_key.
         Alternatively, if api_key is not given, load the cached API key,
         or ask the user to enter it
@@ -353,7 +359,10 @@ class LumaClient:
 
     def clear_auth(self):
         """
-        :code:`luma clear_auth`
+        .. code-block:: shell
+
+            luma clear-auth
+
         Remove cached authorization (client.auth()) if present
         """
         if os.path.isfile(AUTH_FILE):
@@ -367,7 +376,10 @@ class LumaClient:
                silent: bool = False,
            ) -> str:
         """
-        :code:`luma submit <path> <title>`
+        .. code-block:: shell
+
+            luma submit <path> <title>
+
         Submit a video, zip, or directory (at path) to Luma for processing, with given title.
         User might be prompted for API key, if not already authenticated (call auth).
         Returns the slug. After submissing, use status(slug) to check the status
@@ -407,7 +419,7 @@ class LumaClient:
                silent: bool = False,
            ) -> str:
         """
-        (Python only)
+        **[Python only]**
         Submit a video or zip (as binary blob) to Luma for processing, with given title.
         User might be prompted for API key, if not already authenticated (call auth).
         Returns the slug. After submissing, use status(slug) to check the status
@@ -457,7 +469,10 @@ class LumaClient:
 
     def status(self, slug: str) -> LumaCaptureInfo:
         """
-        :code:`luma status <slug>`
+        .. code-block:: shell
+
+            luma status <slug>
+
         Check the status of a submitted capture
 
         :param slug: str, slug of capture to check (from submit())
