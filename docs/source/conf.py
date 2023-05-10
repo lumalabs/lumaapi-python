@@ -85,8 +85,8 @@ def setup(app):
 autodoc_member_order = 'bysource'
 
 html_theme_options = {
-    #  'collapse_navigation': False,
-    #  'sticky_navigation': True,
+    'collapse_navigation': False,
+    'sticky_navigation': True,
     "logo_url": "https://lumalabs.ai",
     "menu": [
         {"name": "API home",

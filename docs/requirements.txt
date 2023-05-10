@@ -1,7 +1,9 @@
-sphinx
+sphinx==5.2.1
 pytorch_sphinx_theme @ git+https://github.com/liruilong940607/pytorch_sphinx_theme.git#egg=pytorch_sphinx_theme
 sphinxcontrib-fulltoc
 recommonmark
 lumaapi
 numpy
 enum-tools[sphinx]
+sphinx-copybutton==0.5.0
+sphinx-design==0.2.0
