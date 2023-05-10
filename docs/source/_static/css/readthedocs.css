@@ -4,6 +4,9 @@
     height: 35px;
     width: 156px;
 }
+#docs-tutorials-resources {
+    margin-top: 2.5em;
+}
 code {
     word-break: normal;
 }
