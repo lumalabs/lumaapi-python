@@ -87,7 +87,7 @@ autodoc_member_order = 'bysource'
 html_theme_options = {
     #  'collapse_navigation': False,
     #  'sticky_navigation': True,
-    "logo_url": "/",
+    "logo_url": "https://lumalabs.ai",
     "menu": [
         {"name": "API home",
          "url": "https://lumalabs.ai/luma-api"},

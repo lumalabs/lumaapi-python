@@ -1,5 +1,3 @@
-uk.. _lumaapi:
-
 Luma API Python + CLI Client Reference
 =========================================================
 
