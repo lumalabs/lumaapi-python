@@ -6,10 +6,10 @@
 Luma API Python + CLI Client Reference
 =========================================================
 
-This is a Python and CLI client for the `Luma API <https://lumalabs.ai/luma-api>`.
+This is a Python and CLI client for the `Luma API <https://lumalabs.ai/luma-api>`_
 
 * Installation: :code:`pip install lumaapi`
-* Python library reference: :ref:`lumaapi`.
+* Python library reference: :ref:`lumaapi`
 * Luma API reference: https://documenter.getpostman.com/view/24305418/2s93CRMCas
 
 Example CLI usage
