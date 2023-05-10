@@ -27,6 +27,7 @@ import urllib.parse
 from enum import Enum
 from dataclasses import dataclass
 from datetime import datetime
+import enum_tools.documentation
 import time
 import json
 import requests
@@ -45,63 +46,68 @@ class LumaCreditInfo:
     Response of credits query
     """
     remaining: int
-    """ Number of remaining credits """
+    """
+    Number of remaining credits
+    """
 
     used: int
-    """ Number of used credits """
+    """
+    Number of used credits
+    """
 
     total: int
-    """ Number of remaining+used credits """
+    """
+    Number of remaining+used credits
+    """
 
+@enum_tools.documentation.document_enum
 class CaptureType(Enum):
     """
     Capture types.
     Current API version always has RECONSTRUCTION type
-    (generation API not yet available for public)
     """
-    RECONSTRUCTION = 0
-    GENERATION = 1
+    RECONSTRUCTION = 0  # doc: This is the only option
 
     @classmethod
     def parse(cls, name: str) -> "CaptureType":
         return getattr(cls, name.upper(), None)
 
+@enum_tools.documentation.document_enum
 class CameraType(Enum):
     """
     Camera types
     """
-    NORMAL = "normal"
-    """ Perspective camera """
-    FISHEYE = "fisheye"
-    """ Fisheye camera """
-    EQUIRECTANGULAR = "equirectangular"
-    """ Equirectangular 360 camera """
+    NORMAL = "normal" # doc: Perspective camera
+    FISHEYE = "fisheye"  # doc: Fisheye camera
+    EQUIRECTANGULAR = "equirectangular"  # doc: Equirectangular 360 camera
 
     @classmethod
     def parse(cls, name: str) -> "CameraType":
         return getattr(cls, name.upper(), None)
 
 
+@enum_tools.documentation.document_enum
 class PrivacyLevel(Enum):
     """
     Privacy levels for capture
     """
-    PRIVATE = "private"
-    UNLISTED = "unlisted"
-    PUBLIC = "public"
-    OPEN = "open"
+    PRIVATE = "private"  # doc: Fully private (default)
+    UNLISTED = "unlisted" # doc: Unlisted. Sharable by link
+    PUBLIC = "public"  # doc: Shows up in feeds and can be featured
+    OPEN = "open"  # doc: Can be remixed by other users
 
     @classmethod
     def parse(cls, name: str) -> "PrivacyLevel":
         return getattr(cls, name.upper(), None)
 
+@enum_tools.documentation.document_enum
 class CaptureStatus(Enum):
     """
-    Run status
+    Capture upload status. Not to be confused with :class:`.RunStatus`
     """
-    NEW = 0
-    UPLOADING = 0
-    COMPLETE = 1
+    NEW = 0  # doc: New capture, not uploaded
+    UPLOADING = 0  # doc: Capture is uploading
+    COMPLETE = 1 # doc: Capture has finished uploading
 
     @classmethod
     def parse(cls, name: str) -> "CaptureStatus":
@@ -109,10 +115,26 @@ class CaptureStatus(Enum):
 
 @dataclass
 class CaptureLocation:
+    """
+    Capture location information.
+    Current API uploads will not have this information.
+    """
     latitude: float = 0.0
+    """
+    Latitude in deg
+    """
     longitude: float = 0.0
-    name: str = ""
+    """
+    Longitude in deg
+    """
+    name: str = "" 
+    """
+    Name of location if available
+    """
     is_visible: bool = True
+    """
+    Whether location is visible to other users
+    """
 
     @classmethod
     def from_dict(cls, data: Dict) -> "CaptureLocation":
@@ -133,12 +155,12 @@ class CaptureLocation:
 
 class RunStatus(Enum):
     """
-    Run status
+    Capture run status
     """
-    NEW = 0
-    DISPATCHED = 1
-    FAILED = 2
-    FINISHED = 3
+    NEW = 0  # doc: New run in queue
+    DISPATCHED = 1  # doc: Run dispatched to worker
+    FAILED = 2  # doc: Run failed
+    FINISHED = 3  # doc: Run finished
 
     @classmethod
     def parse(cls, name: str) -> "RunStatus":
@@ -148,14 +170,24 @@ class RunStatus(Enum):
 @dataclass
 class LumaRunInfo:
     status: RunStatus
+    """
+    Status of run
+    """
 
     progress: int
-    """ Percentage progress (0-100) """
+    """
+    Percentage progress (0-100)
+    """
 
     current_stage: str
-    """ Current stage of reconstruction for information. Examples are sfm and nerf """
+    """
+    Current stage of reconstruction for information. Examples are sfm and nerf
+    """
 
     artifacts: List[Dict[str, str]]
+    """
+    List of output artifacts (each entry has keys type and url)
+    """
 
 @dataclass
 class LumaCaptureInfo:
@@ -197,31 +229,51 @@ class LumaCaptureInfo:
 
 class LumaClient:
     """
-    Luma API Python Client.
-    Currently limited to basic video/zip/folder uploads
-    and status checking.
+    Luma API Python Client. Currently limited to basic video/zip/folder uploads and status checking.
 
-    Library usage: :code:`from lumaapi import LumaClient`
+    **Library usage:**
 
-    CLI usage:
+    .. code-block:: python
 
+         from lumaapi import LumaClient
+         client = LumaClient(api_key)
+         slug = client.submit(video_path, title)
+         print(client.status(slug))
+
+    **CLI usage:**
     To submit a video
-    :code:`luma submit <path> <title>`,
+
+    .. code-block:: shell
+
+        luma submit <path> <title>
+
     where path can be a video, zip, or directory.
     This outputs a slug.
 
     To check status of the capture
-    :code:`luma status <slug>`
+
+    .. code-block:: shell
+
+        luma status <slug>
 
     To search user's captures
-    :code:`luma get <title>`
+
+    .. code-block:: shell
+
+        luma get <title>
 
     To manually authenticate
     (the CLI automatically prompts for api-key when running anything else)
-    :code:`luma auth`
+
+    .. code-block:: shell
+
+        luma auth
 
     To check for credits
-    :code:`luma credits`
+
+    .. code-block:: shell
+
+        luma credits
     """
     def __init__(self,
                  api_key: Optional[str] = None,
@@ -260,7 +312,7 @@ class LumaClient:
 
         :param api_key: str, optional, API key to use instead of prompting user
 
-        :return: dict, headers to use for authenticated requests (:code:`Authorization: luma-pai-key=<api_key>`)
+        :return: dict, headers to use for authenticated requests (:code:`Authorization: luma-api-key=<api_key>`)
         """
         os.makedirs(CACHE_DIR, exist_ok=True)
         if api_key is None and self.auth_header is not None:

@@ -4,6 +4,17 @@
 
 `pip install lumaapi`
 
+**Docs:** 
+https://captures.lumalabs.ai/luma-api/client-docs
+
+
+To build docs: go to docs/ and
+```sh
+make html
+```
+
+Need to install requirements first time (`pip install -r docs/requirements.txt`)
+
 ### CLI usage
 
 - To submit a video: `luma submit <path> <title>`,
@@ -23,3 +34,4 @@ print(client.status(slug))
 ```
 
 Then use functions corresponding to the CLI
+

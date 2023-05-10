@@ -81,9 +81,11 @@ Misc Types
 .. autoenum:: lumaapi.CaptureType
    :members:
 
-.. autoclass:: lumaapi.CaptureLocation
+.. autoenum:: lumaapi.CameraType
    :members:
 
+.. autoclass:: lumaapi.CaptureLocation
+   :members:
 
 Note:
 This doc uses `Ruilong Li's fork of the PyTorch Sphinx theme <https://github.com/liruilong940607/pytorch_sphinx_theme>`_
