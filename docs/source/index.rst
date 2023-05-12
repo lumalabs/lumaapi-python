@@ -43,6 +43,7 @@ Example usage inside Python
     slug = client.submit(video_path, title)
     print(client.status(slug))
 
+Again, you may obtain an API key from the `Luma API dashboard <https://captures.lumalabs.ai/dashboard>`_.
 Any of the functions in LumaClient may be used directly in the CLI e.g.
 
 .. code-block:: shell
