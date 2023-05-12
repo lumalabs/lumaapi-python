@@ -25,7 +25,7 @@ Example CLI usage
 
 If not already logged in, you will be prompted
 for an API key. You may obtain
-one from the `Luma API dashboard <captures.lumalabs.ai/dashboard>`_.
+one from the `Luma API dashboard <https://captures.lumalabs.ai/dashboard>`_.
 You may also manually authenticate with
 
 .. code-block:: shell
