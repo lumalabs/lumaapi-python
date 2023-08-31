@@ -6,7 +6,7 @@
 
 ### Docs
 
-https://captures.lumalabs.ai/luma-api/client-docs
+https://captures.lumalabs.ai/luma-api/client-docs/index.html
 
 
 To build docs: go to docs/ and
