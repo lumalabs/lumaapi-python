@@ -25,7 +25,7 @@ python -m build
 twine upload dist/lumaapi-<x.x.x>.tar.gz
 ```
 
-Please get the password from 1Password (search PyPI)
+For Luma employees: Please get the password from 1Password (search PyPI)
 
 
 ### CLI usage
