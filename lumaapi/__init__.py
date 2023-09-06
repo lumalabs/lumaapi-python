@@ -280,6 +280,7 @@ class LumaClient:
 
     :param api_key: API key. If None, will be requested when needed
     :param is_cli: Whether this is being used as a CLI (internal use only)
+    :param use_cache: Whether to cache the auth headers (default True)
     """
     def __init__(self,
                  api_key: Optional[str] = None,
