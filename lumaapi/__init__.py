@@ -290,9 +290,9 @@ class LumaClient:
         """
         self.auth_header = None
         self.is_cli = is_cli
+        self.use_cache = use_cache
         if api_key is not None:
             self.auth(api_key)
-        self.use_cache = use_cache
 
 
     def credits(self) -> LumaCreditInfo:
@@ -341,11 +341,10 @@ class LumaClient:
             # Prompt user for API key
             if api_key is None:
                 api_key = input("Enter your Luma API key (get from https://captures.lumalabs.ai/dashboard): ").strip()
-
+            result = {"Authorization": 'luma-api-key=' + api_key}
             if self.use_cache:
                 os.makedirs(CACHE_DIR, exist_ok=True)
                 with open(AUTH_FILE, "w") as f:
-                    result = {"Authorization": 'luma-api-key=' + api_key}
                     json.dump(result, f)
 
             print("Verifying api-key...")
