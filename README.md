@@ -6,8 +6,7 @@
 
 ### Docs
 
-https://captures.lumalabs.ai/luma-api/client-docs/index.html
-
+[https://lumalabs.ai/luma-api/client-docs/index.html](https://lumalabs.ai/luma-api/client-docs/index.html)
 
 To build docs: go to docs/ and
 ```sh
