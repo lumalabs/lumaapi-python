@@ -280,15 +280,18 @@ class LumaClient:
 
     :param api_key: API key. If None, will be requested when needed
     :param is_cli: Whether this is being used as a CLI (internal use only)
+    :param use_cache: Whether to cache the auth headers (default True)
     """
     def __init__(self,
                  api_key: Optional[str] = None,
-                 is_cli: bool = False):
+                 is_cli: bool = False,
+                 use_cache: bool = True):
         """
         Construct LumaClient
         """
         self.auth_header = None
         self.is_cli = is_cli
+        self.use_cache = use_cache
         if api_key is not None:
             self.auth(api_key)
 
@@ -329,7 +332,6 @@ class LumaClient:
 
         :return: dict, headers to use for authenticated requests (:code:`Authorization: luma-api-key=<api_key>`)
         """
-        os.makedirs(CACHE_DIR, exist_ok=True)
         if api_key is None and self.auth_header is not None:
             result = self.auth_header
         elif api_key is None and os.path.isfile(AUTH_FILE):
@@ -340,9 +342,11 @@ class LumaClient:
             # Prompt user for API key
             if api_key is None:
                 api_key = input("Enter your Luma API key (get from https://captures.lumalabs.ai/dashboard): ").strip()
-            with open(AUTH_FILE, "w") as f:
-                result = {"Authorization": 'luma-api-key=' + api_key}
-                json.dump(result, f)
+            result = {"Authorization": 'luma-api-key=' + api_key}
+            if self.use_cache:
+                os.makedirs(CACHE_DIR, exist_ok=True)
+                with open(AUTH_FILE, "w") as f:
+                    json.dump(result, f)
 
             print("Verifying api-key...")
             # Check it by getting credits
