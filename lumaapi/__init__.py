@@ -341,7 +341,7 @@ class LumaClient:
         else:
             # Prompt user for API key
             if api_key is None:
-                api_key = input("Enter your Luma API key (get from https://captures.lumalabs.ai/dashboard): ").strip()
+                api_key = input("Enter your Luma API key (get from https://lumalabs.ai/dashboard/api): ").strip()
             result = {"Authorization": 'luma-api-key=' + api_key}
             if self.use_cache:
                 os.makedirs(CACHE_DIR, exist_ok=True)
@@ -353,7 +353,7 @@ class LumaClient:
             try:
                 self.credits()
             except Exception as ex:
-                print("401 invalid API key, please obtain one from https://captures.lumalabs.ai/dashboard")
+                print("401 invalid API key, please obtain one from https://lumalabs.ai/dashboard/api")
                 os.remove(AUTH_FILE)
                 raise ex
             self.auth_header = result

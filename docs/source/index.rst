@@ -25,7 +25,7 @@ Example CLI usage
 
 If not already logged in, you will be prompted
 for an API key. You may obtain
-one from the `Luma API dashboard <https://captures.lumalabs.ai/dashboard>`_.
+one from the `Luma API dashboard <https://lumalabs.ai/dashboard/api>`_.
 You may also manually authenticate with
 
 .. code-block:: shell
@@ -43,7 +43,7 @@ Example usage inside Python
     slug = client.submit(video_path, title)
     print(client.status(slug))
 
-Again, you may obtain an API key from the `Luma API dashboard <https://captures.lumalabs.ai/dashboard>`_.
+Again, you may obtain an API key from the `Luma API dashboard <https://lumalabs.ai/dashboard/api>`_.
 Any of the functions in LumaClient may be used directly in the CLI e.g.
 
 .. code-block:: shell
