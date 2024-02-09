@@ -1,5 +1,7 @@
 ## Luma API Python client
 
+**WARNING:** We are no longer actively supporting this capture API. For Genie API, please contact us for information.
+
 ### Installation
 
 `pip install lumaapi`
